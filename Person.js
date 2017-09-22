@@ -12,6 +12,16 @@ class Person {
 		}
 		return person;
 	}
+
+	static get(id) {
+		return Person.personList.find(person => id === person.id);
+	}
+
+	static longestName() {
+		return Person.personList.reduce((longest, person) => {
+			return person.name.length > longest ? person.name.length : longest;
+		}, 0);
+	}
 }
 Person.personList = new Array();
 
