@@ -6,6 +6,10 @@ class Node {
 	}
 }
 
+function direction(node, data) {
+	return data < node.data ? 'left' : 'right';
+}
+
 class BinaryTree {
 	static create(array) {
 		const tree = new BinaryTree();
@@ -19,23 +23,32 @@ class BinaryTree {
 	}
 
 	insert(data) {
-		const node = traverseTree(this.head, data);
+		const node = this.traverseTree(this.head, data);
 		node[direction(node, data)] = new Node(data);
 	}
 
-	direction(node, data) {
-		return node.data < data ? "left" : "right";
+	traverseTree(node, data) {
+		if (direction(node, data) === 'left') {
+			if (node.left !== null) return this.traverseTree(node.left, data);
+		} else {
+			if (node.right !== null) return this.traverseTree(node.right, data);
+		}
+		return node;
 	}
 
-	traverseTree(node, data) {
-		if (direction(node, data) === "left") {
-			if (node.left !== null) return traverseTree(node.left, data);
-		} else {
-			if (node.right !== null) return traverseTree(node.left, data);
+	traverseAndPrint(node) {
+		node = node || this.head;
+		console.log(node.data);
+		if (node.left) {
+			this.traverseAndPrint(node.left);
 		}
-
-		return node;
+		if (node.right) {
+			this.traverseAndPrint(node.right);
+		}
 	}
 }
 
 const tree = BinaryTree.create([8, 10, 3, 1, 6, 14, 4, 7, 13]);
+
+//console.log(JSON.stringify(tree, null, 2));
+tree.traverseAndPrint();
