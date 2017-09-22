@@ -1,22 +1,38 @@
-const Person = require('./Person');
-const EDGE_LIST = require('./edgeList');
-const LinkedList = require('./LinkedList');
+const Person = require("./Person");
+const EDGE_LIST = require("./edgeList");
+const LinkedList = require("./LinkedList");
 
 class AgencyList {
 	constructor(data) {
 		this.list = [];
 		data.forEach(([left, right, weight]) => {
-			console.log(left, right, weight);
 			this.list[left.id] = this.list[left.id] || new LinkedList();
 			this.list[left.id].append(new LinkedList.Node(right, weight));
 			this.list[right.id] = this.list[right.id] || new LinkedList();
 			this.list[right.id].append(new LinkedList.Node(left, weight));
 		});
 	}
+
+	print() {
+		const columnWidth = Person.longestName() + 2;
+		let row = "";
+
+		this.list.forEach((el, i) => {
+			row += Person.get(i).name.padEnd(columnWidth);
+			row += el.listNodes() + "\n";
+		});
+
+		console.log(row);
+	}
+
+	getEdgeWeight(from, to) {
+		return this.list[from].findWeightById(to) || "None";
+	}
 }
 
 const list = new AgencyList(EDGE_LIST);
-list.list.forEach(list => list.listNodes());
+list.print();
+console.log(list.getEdgeWeight(1, 4));
 
 class AgencyMatrix {
 	constructor(data) {
@@ -30,17 +46,17 @@ class AgencyMatrix {
 	}
 
 	getEdgeWeight(from, to) {
-		return this.matrix[from][to] || 'None';
+		return this.matrix[from][to] || "None";
 	}
 
 	print() {
 		const columnWidth = Person.longestName() + 2;
-		let row = ''.padEnd(columnWidth);
+		let row = "".padEnd(columnWidth);
 		for (let i = 0; i < this.matrix.length; i++) {
 			row += Person.get(i).name.padEnd(columnWidth);
 		}
 
-		row += '\n';
+		row += "\n";
 
 		for (let i = 0; i < this.matrix.length; i++) {
 			row += Person.get(i).name.padEnd(columnWidth);
@@ -49,10 +65,10 @@ class AgencyMatrix {
 				if (node) {
 					row += `${this.matrix[i][j]}`.padEnd(columnWidth);
 				} else {
-					row += 'X'.padEnd(columnWidth);
+					row += "X".padEnd(columnWidth);
 				}
 			}
-			row += '\n';
+			row += "\n";
 		}
 		console.log(row);
 	}

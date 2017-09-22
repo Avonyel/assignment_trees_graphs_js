@@ -46,24 +46,23 @@ class LinkedList {
 		return currentNode;
 	}
 
-	findIndex(word) {
-		let index = -1,
-			node = this.head;
-		while (node !== this.end) {
-			index++;
+	findWeightById(id) {
+		let node = this.head;
+		while (node) {
+			if (node.vertex.id === id) return node.weight;
 			node = node.nextNode;
-
-			if (node.word === word) return index;
 		}
-		return index;
+		return null;
 	}
 
 	listNodes() {
 		let node = this.head;
-		while (node !== this.end) {
-			console.log('' + node);
+		let row = "";
+		while (node) {
+			row += node + ", ";
 			node = node.nextNode;
 		}
+		return row;
 	}
 }
 
@@ -79,7 +78,7 @@ function Node(vertex, weight) {
 }
 LinkedList.Node = Node;
 LinkedList.Node.prototype.toString = function() {
-	return `Vertex: ${this.vertex}, Weight: ${this.weight}`;
+	return `${this.vertex.name} (${this.weight})`;
 };
 
 module.exports = LinkedList;
