@@ -45,3 +45,19 @@ An Adjacency List?
 
 Edge List: O(d)
 Adjacency Matrix: O(n)
+Adjacency List: O(log n)
+
+
+
+4.
+
+Q: What would the Big O be of REMOVING a vertex or edge from:
+An Edge List?
+An Adjacency Matrix?
+An Adjacency List?
+
+----------------------------------------------------------------------------
+
+Edge List: O(n)
+Adjacency Matrix: O(1) for an edge, O(n^2) for a vertex?
+Adjacency List: 

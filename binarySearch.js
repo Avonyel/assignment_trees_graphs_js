@@ -7,7 +7,7 @@ class Node {
 }
 
 function direction(node, data) {
-	return data < node.data ? 'left' : 'right';
+	return data < node.data ? "left" : "right";
 }
 
 class BinaryTree {
@@ -28,7 +28,7 @@ class BinaryTree {
 	}
 
 	traverseTree(node, data) {
-		if (direction(node, data) === 'left') {
+		if (direction(node, data) === "left") {
 			if (node.left !== null) return this.traverseTree(node.left, data);
 		} else {
 			if (node.right !== null) return this.traverseTree(node.right, data);
@@ -46,7 +46,35 @@ class BinaryTree {
 			this.traverseAndPrint(node.right);
 		}
 	}
+
+	prettyPrint(node) {
+		node = node || this.head;
+		console.log(node.data);
+		if (node.left) {
+			this.traverseAndPrint(node.left);
+		}
+		if (node.right) {
+			this.traverseAndPrint(node.right);
+		}
+	}
 }
+
+const arr = [];
+
+const widest = (node, depth = 0, width, min = 0, max) => {
+	if (!arr[depth]) arr[depth] = new Array(width).fill(" ");
+	arr[depth][min + (max - min) / 2];
+	if (node.left) {
+		widest(node.left, depth + 1);
+	}
+	if (node.right) {
+		widest(node.right, depth + 1);
+	}
+	if (depth === 0)
+		return arr.reduce((max, el) => {
+			return el.length > max ? el.length : max;
+		});
+};
 
 const tree = BinaryTree.create([8, 10, 3, 1, 6, 14, 4, 7, 13]);
 
