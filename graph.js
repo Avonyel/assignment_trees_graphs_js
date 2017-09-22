@@ -1,9 +1,25 @@
-const Person = require("./Person");
-const EDGE_LIST = require("./edgeList");
+const Person = require('./Person');
+const EDGE_LIST = require('./edgeList');
+const LinkedList = require('./LinkedList');
+
+class AgencyList {
+	constructor(data) {
+		this.list = [];
+		data.forEach(([left, right, weight]) => {
+			console.log(left, right, weight);
+			this.list[left.id] = this.list[left.id] || new LinkedList();
+			this.list[left.id].append(new LinkedList.Node(right, weight));
+			this.list[right.id] = this.list[right.id] || new LinkedList();
+			this.list[right.id].append(new LinkedList.Node(left, weight));
+		});
+	}
+}
+
+const list = new AgencyList(EDGE_LIST);
+list.list.forEach(list => list.listNodes());
 
 class AgencyMatrix {
 	constructor(data) {
-		this.data = data;
 		this.matrix = [];
 		data.forEach(([left, right, weight]) => {
 			this.matrix[left.id] = this.matrix[left.id] || [];
@@ -13,31 +29,34 @@ class AgencyMatrix {
 		});
 	}
 
+	getEdgeWeight(from, to) {
+		return this.matrix[from][to] || 'None';
+	}
+
 	print() {
-		const columnWidth = Person.longestName() + 1;
-		let row = "".padEnd(columnWidth);
+		const columnWidth = Person.longestName() + 2;
+		let row = ''.padEnd(columnWidth);
 		for (let i = 0; i < this.matrix.length; i++) {
-			row += padName(columnWidth, Person.get(i).name);
+			row += Person.get(i).name.padEnd(columnWidth);
 		}
 
-		row += "\n";
+		row += '\n';
 
 		for (let i = 0; i < this.matrix.length; i++) {
-			row += padName(columnWidth, Person.get(i).name);
-			for (let j = 0; j < this.matrix[i].length; j++) {
-				row += padName(columnWidth, `${this.matrix[i][j]}`);
+			row += Person.get(i).name.padEnd(columnWidth);
+			for (let j = 0; j < this.matrix.length; j++) {
+				const node = this.matrix[i][j];
+				if (node) {
+					row += `${this.matrix[i][j]}`.padEnd(columnWidth);
+				} else {
+					row += 'X'.padEnd(columnWidth);
+				}
 			}
-			row += "\n";
+			row += '\n';
 		}
-
 		console.log(row);
 	}
 }
-
-const padName = (columnWidth, name) => {
-	const padding = columnWidth - name.length;
-	return name.padEnd(padding);
-};
 
 class Node {}
 
@@ -47,4 +66,6 @@ class UndirectedGraph {
 
 const matrix = new AgencyMatrix(EDGE_LIST);
 
-matrix.print();
+//matrix.print();
+// Hooorayyy! This was the hardest one to implement.
+//console.log(matrix.getEdgeWeight(1, 4));
